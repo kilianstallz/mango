@@ -26,6 +26,6 @@ jobs:
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
-          args: release --rm-dist --config .goreleaser/darwin.yml
+          args: release  --clean --config .goreleaser/darwin.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
