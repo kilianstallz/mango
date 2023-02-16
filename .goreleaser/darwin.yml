@@ -1,0 +1,39 @@
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+
+builds:
+-
+  id: mango-darwin
+  ldflags:
+    - -s -w -X mango.version={{.Version}} -X mango.version.Version={{.Version}}
+  env:
+    - CGO_ENABLED=1
+  goos:
+    - darwin
+  goarch:
+    - amd64
+    - arm64
+
+gomod:
+  proxy: true
+
+archives:
+-
+  id: mango-archive
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  format_overrides:
+    - goos: darwin
+      format: zip
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
